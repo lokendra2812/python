@@ -1,14 +1,16 @@
-'''
+"""
     Student Name :  LOKENDRA KUMAR AGRAWAL
     Batch : AIML Course from IIK with SimpliLearn
     Project : Module 2 Python Project
-    Project Title : Online Car Rental Platform
+    Title : Online Car Rental Platform
 
-'''
+"""
 import datetime
+from datetime import timedelta
 import pprint
+import math
 
-#Create a class for renting the cars and define a constructor in it
+# Create a class for renting the cars and define a constructor in it
 class RentalCar:
     def __init__(self):
         pass
@@ -34,109 +36,112 @@ class RentalCar:
     # Define a method for displaying the available cars
     def available_cars(self):
         print("==========================================================")
-        print("Remaining Mercedes = ",self.Mercedes)      
-        print("Remaining BMW = ",self.BMW)       
-        print("Remaining AUDI = ",self.AUDI)       
-        print("Remaining Lamborghini = ",self.Lamborghini)       
+        print("Remaining Mercedes = ", self.Mercedes)
+        print("Remaining BMW = ", self.BMW)
+        print("Remaining AUDI = ", self.AUDI)
+        print("Remaining Lamborghini = ", self.Lamborghini)
         return self.Mercedes + self.BMW + self.AUDI + self.Lamborghini
 
     # define methods for renting cars on an hourly basis
     def hourlyBasedRent(self):
-        if self.requested_car>0 and self.requested_car<self.total_cars:
-            self.time_at_rent = datetime.datetime.now();
+        if self.requested_car > 0 and self.requested_car < self.available_cars():
+            self.time_at_rent = datetime.datetime.now()
             self.rental_mode = 'hourly'
-            hour_base_rent+=1    
-        return self.hour_base_rent
+        else:
+            self.hour_base_rent += 1
+        return self.time_at_rent
 
-    # define methods for renting cars on an daily basis    
+    # define methods for renting cars on an daily basis
     def dailyBasedRent(self):
-        if self.requested_car>0 and self.requested_car<self.total_cars:
-            self.time_at_rent = datetime.datetime.now();
+        if self.requested_car > 0 and self.requested_car < self.total_cars:
+            self.time_at_rent = datetime.datetime.now()
             self.rental_mode = 'daily'
-            daily_base_rent+=1
+            self.daily_base_rent += 1
         return self.daily_base_rent
 
-    # define methods for renting cars on an weekly basis        
+    # define methods for renting cars on an weekly basis
     def weeklyBasedRent(self):
-        if self.requested_car>0 and self.requested_car<self.total_cars:
-            self.time_at_rent = datetime.datetime.now();  
+        if self.requested_car > 0 and self.requested_car < self.total_cars:
+            self.time_at_rent = datetime.datetime.now()
             self.rental_mode = 'weekly'
-            weekly_base_rent+=1
+            self.weekly_base_rent += 1
         return self.weekly_base_rent
 
-    def return_the_cars(self,rental_time,rental_mode,number_of_cars): 
-        # status of remainig Car
-        print(f"============== Total Car Availalbe together = {customer.available_cars()} ========================= ") 
-        # updating inventary
+    def return_the_cars(self, rental_time, rental_mode, number_of_cars):
+        # updating inventory
         if self.requested_car == 1:
-            customer.Mercedes += number_of_cars
+            self.Mercedes += number_of_cars
             # generating bills
-            self.generate_bill(self.requested_car,rental_mode)
+            self.generate_bill(rental_time, self.requested_car, rental_mode)
         elif self.requested_car == 2:
-            customer.BMW += number_of_cars
+            self.BMW += number_of_cars
             # generating bills
-            self.generate_bill(self.requested_car)            
-        elif self.requested_car == 3: 
-            customer.AUDI += number_of_cars
+            self.generate_bill(rental_time, self.requested_car,rental_mode)
+        elif self.requested_car == 3:
+            self.AUDI += number_of_cars
             # generating bills
-            self.generate_bill(self.requested_car)            
-        elif self.requested_car == 4: 
-            customer.Lamborghini += number_of_cars
+            self.generate_bill(rental_time, self.requested_car,rental_mode)
+        elif self.requested_car == 4:
+            self.Lamborghini += number_of_cars
             # generating bills
-            self.generate_bill(self.requested_car)            
+            self.generate_bill(rental_time, self.requested_car,rental_mode)
         else:
             print("")
 
+        # status of remaining Car
+        print(f"============== Total Car Available together = {customer.available_cars()} ========================= ")
 
-
-    def generate_bill(self,requested_car,rental_mode):
+    def generate_bill(self, rental_time, requested_car, rental_mode):
+        # just adding 1 to check real output.
         total = 0
         match requested_car:
             # self.Mercedes
-            case 1: 
-                 # for hourly basis   
-                 if rental_mode == 1:
-                     rent_time = self.time_at_rent
-                     current_time = datetime.datetime.now();
-                     
-                     time_diff = current_time - rent_time; 
-                     hours_difference = time_diff.total_seconds() / 3600
-                     total = 5000 * hours_difference 
-                     
-                     # printing bills data
-                     print("Total Time in Hours used = ",hours_difference)
-                     print("Total Bill  = ",total)
+            case 1:
+                # for hourly basis
+                if rental_mode == 1:
+                    current_time = datetime.datetime.now()
+                    current_time = current_time  + timedelta(hours=6)
 
-                 elif rental_mode == 2:
-                     time_diff = 20; # temprary 
-                 elif rental_mode == 3:
-                     time_diff = 30; # temprary 
-                 else:
-                     printf("Rental Mode not selected as per requirement :")
-            case 2: # self.Lamborghini
-                 total = 6600 *rental_mode
-            case 3: # self.AUDI
-                 total = 4300 *rental_mode
-            case 4: # self.BMW
-                 total = 5900 *rental_mode
-            case _:
-                action-default
+                    print(f" rent_time = {rental_time}")
+                    print(f" current_time = {current_time}")
+
+                    time_diff = current_time - rental_time;
+                    hours_difference = time_diff.total_seconds() / 3600
+                    total = 5000 * hours_difference
+                    factor = 10
+                    math.ceil(total * factor) / factor
+
+                    # printing bills data
+                    print("Total Time in Hours used = ", hours_difference)
+                    print(f"Total Bill  {total} Rupees")
+
+                elif rental_mode == 2:
+                    time_diff = 20  # temprary
+                elif rental_mode == 3:
+                    time_diff = 30 # temprary
+                else:
+                    print("Rental Mode not selected as per requirement :")
+            case 2:  # self.Lamborghini
+                total = 6600 * rental_mode
+            case 3:  # self.AUDI
+                total = 4300 * rental_mode
+            case 4:  # self.BMW
+                total = 5900 * rental_mode
 
 
-        
-        
+
 # Create a class for customers and define a constructor in it.
 class Customers(RentalCar):
-    
+
     def __init__(self):
         pass
 
     def requestingCars(self):
         pass
 
-    def returningCars(self):    
+    def returningCars(self):
         pass
-        
+
 
 # Define the main method and create objects for both car rental and customer classes
 rentalcar = RentalCar()
@@ -145,20 +150,22 @@ customer.setParameters()
 
 print("Total Types of Car Available : ");
 car_types = ["1 for Mercedes", "2 for BMW", "3 for AUDI", "4 for lamborghini"];
-car_charges = ["for Mercedes = Rs 5000 per hour", "for BMW = Rs 5900 per hour", "for AUDI = Rs 4300 per hour", "for lamborghini = Rs 6600 per hour"];
+car_charges = ["for Mercedes = Rs 5000 per hour", "for BMW = Rs 5900 per hour", "for AUDI = Rs 4300 per hour",
+               "for lamborghini = Rs 6600 per hour"];
 pprint.pprint(car_types)
 pprint.pprint(car_charges)
 
 # input as a choice for displaying car availability, rental modes, or returning the cars.
 requested_car = int(input("Enter your choice for Car "))
 customer.requested_car = requested_car
+time_at_taken = customer.hourlyBasedRent()
 
 if requested_car == 1:
-    print("Total Available Mercedes = ",customer.Mercedes)
+    print("Total Available Mercedes = ", customer.Mercedes)
     customer.requested_mercedes = int(input("Enter total Mercedes =  "))
     if customer.requested_mercedes <= customer.Mercedes:
-        customer.Mercedes-=customer.requested_mercedes
-        print(f"you have selected ",{customer.requested_mercedes}," Mercedes")
+        customer.Mercedes -= customer.requested_mercedes
+        print(f"you have selected ", {customer.requested_mercedes}, " Mercedes")
         print("------------Please Select Mode of Rent--------------------")
         print("for hourly basis enter 1 :")
         print("for daily basis enter 2 :")
@@ -170,55 +177,54 @@ if requested_car == 1:
             customer.dailyBasedRent()
         elif customer.rental_mode_mercedes == 3:
             customer.weeklyBasedRent()
-        else: 
+        else:
             print("Enter 1, 2 or 3 No other option available !!!!!!!!!!")
     else:
-        print("You can select maximum Mercedes = ",customer.Mercedes) 
-elif requested_car == 2: 
-    print("Total Available BMW = ",customer.BMW)
+        print("You can select maximum Mercedes = ", customer.Mercedes)
+elif requested_car == 2:
+    print("Total Available BMW = ", customer.BMW)
     requested_bmw = int(input("Enter total BMW =  "))
     if requested_bmw <= customer.BMW:
-        customer.BMW-=requested_bmw
-        print("you have selected ",requested_bmw," BMW")
+        customer.BMW -= requested_bmw
+        print("you have selected ", requested_bmw, " BMW")
     else:
-        print("You can select maximum BMW = ",customer.BMW) 
+        print("You can select maximum BMW = ", customer.BMW)
 elif requested_car == 3:
-    print("Total Available AUDI = ",customer.AUDI)
+    print("Total Available AUDI = ", customer.AUDI)
     requested_audi = int(input("Enter total AUDI =  "))
     if requested_audi <= customer.AUDI:
-        customer.AUDI-=requested_audi
-        print("you have selected ",requested_audi," AUDI")
+        customer.AUDI -= requested_audi
+        print("you have selected ", requested_audi, " AUDI")
     else:
-        print("You can select maximum AUDI = ",customer.AUDI) 
+        print("You can select maximum AUDI = ", customer.AUDI)
 elif requested_car == 4:
-    print("Total Available Lamborghini = ",customer.Lamborghini)
+    print("Total Available Lamborghini = ", customer.Lamborghini)
     requested_Lamborghini = int(input("Enter total Lamborghini =  "))
     if requested_Lamborghini <= customer.Lamborghini:
-        customer.Lamborghini-=requested_Lamborghini
-        print("you have selected ",requested_Lamborghini," Lamborghini")
+        customer.Lamborghini -= requested_Lamborghini
+        print("you have selected ", requested_Lamborghini, " Lamborghini")
     else:
-        print("You can select maximum Lamborghini = ",customer.Lamborghini) 
+        print("You can select maximum Lamborghini = ", customer.Lamborghini)
 else:
     print(" Please give input 1 to 4 only !!!!!!!!!!!")
-    
 
 # =========================================================================================
 # return the Car/Cars
 
 print("Please return the Car")
+pprint.pprint(car_types)
 car_type = int(input("Enter the Car company name :"))
-return_time = datetime.datetime.now()
 if car_type == 1:
-    customer.return_the_cars(return_time,customer.rental_mode_mercedes,customer.requested_mercedes)
+    customer.return_the_cars(time_at_taken, customer.rental_mode_mercedes, customer.requested_mercedes)
 elif car_type == 2:
-    customer.return_the_cars(return_time,customer.rental_mode_mercedes,customer.requested_mercedes)
+    customer.return_the_cars(time_at_taken, customer.rental_mode_mercedes, customer.requested_mercedes)
 elif car_type == 3:
-    customer.return_the_cars(return_time,customer.rental_mode_mercedes,customer.requested_mercedes)
-elif car_type == 4: 
-    customer.return_the_cars(return_time,customer.rental_mode_mercedes,customer.requested_mercedes)
+    customer.return_the_cars(time_at_taken, customer.rental_mode_mercedes, customer.requested_mercedes)
+elif car_type == 4:
+    customer.return_the_cars(time_at_taken, customer.rental_mode_mercedes, customer.requested_mercedes)
 else:
     print("Try ones again. !!  Enter correct Car type ")
-    
+
 
 
 
