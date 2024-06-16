@@ -1,3 +1,3 @@
 # python
 Python practiced code
-adde ssh key today
+added ssh key today
